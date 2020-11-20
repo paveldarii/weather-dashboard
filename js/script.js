@@ -1,6 +1,12 @@
 $(document).foundation();
 var todayDate = moment().format("M/D/YYYY");
-var cityName = "New York";
+if (
+  localStorage.getItem("userChoice") == null &&
+  localStorage.getItem("userChoice") == undefined
+) {
+  localStorage.setItem("userChoice", "Austin");
+}
+var cityName = localStorage.getItem("userChoice");
 var wetherAPIKey = "46e368e4530a17148527414cba27b952";
 var todayWeatherURL =
   "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -12,17 +18,25 @@ var fiveDayForecastUrl =
   cityName +
   "&appid=" +
   wetherAPIKey;
-var cityList = [
-  "Austin",
-  "Chicago",
-  "New York",
-  "Orlando",
-  "San Francisco",
-  "Seattle",
-  "Denver",
-  "Atlanta",
-];
-displayCities(cityList);
+if (
+  localStorage.getItem("cityList") == null &&
+  localStorage.getItem("cityList") == undefined
+) {
+  var cityList = [
+    "Austin",
+    "Chicago",
+    "New York",
+    "Orlando",
+    "San Francisco",
+    "Seattle",
+    "Denver",
+    "Atlanta",
+  ];
+  localStorage.setItem("cityList", cityList);
+}
+var returnedCityList = localStorage.getItem("cityList").split(",");
+
+displayCities(returnedCityList);
 $.ajax({
   url: todayWeatherURL,
   method: "GET",
@@ -139,10 +153,25 @@ function displayCities(cityList) {
 }
 
 $("#search-button").click(function () {
-  var userCity = $("#search").val();
-  console.log(userCity);
+  chosenCity = $("#search").val();
+  localStorage.setItem("userChoice", chosenCity);
+  window.open("index.html", "_self");
+  localList = [chosenCity];
+  for (let i = 0; i < returnedCityList.length; i++) {
+    if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
+      continue;
+    } else {
+      localList.push(returnedCityList[i]);
+    }
+  }
+  if (localList.length > 8) {
+    localList.splice(i, localList.lengt - 8);
+  }
+  localStorage.setItem("cityList", localList);
 });
 
 $("td").click(function () {
-  console.log($(this)[0].innerText);
+  chosenCity = $(this)[0].innerText;
+  localStorage.setItem("userChoice", chosenCity);
+  window.open("index.html", "_self");
 });
