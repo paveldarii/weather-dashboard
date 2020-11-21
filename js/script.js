@@ -1,4 +1,3 @@
-$(document).foundation();
 var todayDate = moment().format("M/D/YYYY");
 if (
   localStorage.getItem("userChoice") == null &&
