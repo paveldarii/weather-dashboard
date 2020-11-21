@@ -92,7 +92,7 @@ $.ajax({
       dailyTemperature = response.daily[i].feels_like.day;
       dailyHumidity = response.daily[i].humidity;
       dailyIconURL =
-        "http://openweathermap.org/img/w/" +
+        "https://openweathermap.org/img/w/" +
         response.daily[i].weather[0].icon +
         ".png";
       displayFiveDayWeather(
@@ -164,6 +164,7 @@ $("#search-button").click(function () {
   window.open("index.html", "_self");
   //recreate the history list
   var localList = [chosenCity];
+  // the loop checks if the city searched by User is not repeated in the search history, and if yes delete it from there and move it on the top of search list
   for (let i = 0; i < returnedCityList.length; i++) {
     if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
       continue;
