@@ -1,13 +1,12 @@
 //set today date
 var todayDate = moment().format("M/D/YYYY");
-//set a city for when the user will enter the first time on the site
+//set a default city in case the user will enter the first time on the site
 if (
   localStorage.getItem("userChoice") == null &&
   localStorage.getItem("userChoice") == undefined
 ) {
   localStorage.setItem("userChoice", "Austin");
 }
-
 var cityName = localStorage.getItem("userChoice");
 var wetherAPIKey = "46e368e4530a17148527414cba27b952";
 var todayWeatherURL =
