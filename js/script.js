@@ -86,9 +86,9 @@ $.ajax({
     });
   })
   .then(function (response) {
-    console.log(response);
     for (let i = 0; i < 5; i++) {
-      dailyDate = todayDate;
+      globalTime = moment().add(i + 1, "days");
+      dailyDate = globalTime.format("M/D/YYYY");
       dailyTemperature = response.daily[i].feels_like.day;
       dailyHumidity = response.daily[i].humidity;
       dailyIconURL =
@@ -104,6 +104,29 @@ $.ajax({
     }
   });
 
+$.ajax({
+  url: todayWeatherURL,
+  method: "GET",
+}).then(function (response) {
+  console.log(response);
+  humidity = response.main.humidity;
+  windSpeed = response.wind.speed;
+  iconKey = response.weather[0].icon;
+  temperature = ((9 / 5) * (response.main.temp - 273) + 32).toFixed(2);
+  iconURL = "https://openweathermap.org/img/w/" + iconKey + ".png";
+  lat = response.coord.lat;
+  lon = response.coord.lon;
+
+  return $.ajax({
+    url:
+      "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&appid=46e368e4530a17148527414cba27b952",
+    method: "GET",
+  });
+});
 function displayTodayWeather(
   cityName,
   todayDate,
