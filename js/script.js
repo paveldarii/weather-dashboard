@@ -39,6 +39,8 @@ if (
 var returnedCityList = localStorage.getItem("cityList").split(",");
 // display a list of eight cities
 displayCities(returnedCityList);
+
+// obtain the longitude and latitude of the city then return the info to display today's weather
 $.ajax({
   url: todayWeatherURL,
   method: "GET",
@@ -74,6 +76,16 @@ $.ajax({
       iconURL,
       UVIndex
     );
+  });
+
+// obtain the longitude and latitude of the city then return the info to display in the next five days sections
+$.ajax({
+  url: todayWeatherURL,
+  method: "GET",
+})
+  .then(function (response) {
+    lat = response.coord.lat;
+    lon = response.coord.lon;
     return $.ajax({
       url:
         "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -104,29 +116,6 @@ $.ajax({
     }
   });
 
-$.ajax({
-  url: todayWeatherURL,
-  method: "GET",
-}).then(function (response) {
-  console.log(response);
-  humidity = response.main.humidity;
-  windSpeed = response.wind.speed;
-  iconKey = response.weather[0].icon;
-  temperature = ((9 / 5) * (response.main.temp - 273) + 32).toFixed(2);
-  iconURL = "https://openweathermap.org/img/w/" + iconKey + ".png";
-  lat = response.coord.lat;
-  lon = response.coord.lon;
-
-  return $.ajax({
-    url:
-      "https://api.openweathermap.org/data/2.5/uvi?lat=" +
-      lat +
-      "&lon=" +
-      lon +
-      "&appid=46e368e4530a17148527414cba27b952",
-    method: "GET",
-  });
-});
 function displayTodayWeather(
   cityName,
   todayDate,

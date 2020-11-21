@@ -2,40 +2,14 @@ nav {
   background-color: black;
   width: 100%;
   padding: 10px;
-}
-h1 {
   color: white;
   text-align: center;
 }
-
-#wether-now {
-  background-color: red;
-}
-
-.menu,
-strong,
-p,
-h4,
-h5,
-img {
-  padding-left: 10px;
-}
-
-h4,
-h5,
-strong {
-  padding-top: 25px;
-}
-h4,
-h5 {
-  font-weight: bold;
-}
-#icon {
-  padding-top: 20px;
-  padding-left: 0;
-}
-
 #right-container {
+  padding: 10px;
+}
+
+#left-container {
   background-color: #eaeaea;
 }
 table {
