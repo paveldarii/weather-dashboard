@@ -2,7 +2,6 @@
 var todayDate = moment().format("M/D/YYYY");
 var todayHumidity, windSpeed, iconKey, temperature, iconURL, lat, lon;
 //set a default city in case the user will enter the first time on the site
-var isError = false;
 if (
   localStorage.getItem("userChoice") == null &&
   localStorage.getItem("userChoice") == undefined
