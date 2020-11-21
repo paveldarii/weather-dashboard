@@ -1,5 +1,6 @@
 //set today date
 var todayDate = moment().format("M/D/YYYY");
+var todayHumidity, windSpeed, iconKey, temperature, iconURL, lat, lon;
 //set a default city in case the user will enter the first time on the site
 if (
   localStorage.getItem("userChoice") == null &&
@@ -46,7 +47,7 @@ $.ajax({
 })
   .then(function (response) {
     console.log(response);
-    humidity = response.main.humidity;
+    todayHumidity = response.main.humidity;
     windSpeed = response.wind.speed;
     iconKey = response.weather[0].icon;
     temperature = ((9 / 5) * (response.main.temp - 273) + 32).toFixed(2);
@@ -65,12 +66,13 @@ $.ajax({
     });
   })
   .then(function (data) {
+    console.log(data);
     var UVIndex = data.value;
     displayTodayWeather(
       cityName,
       todayDate,
       temperature,
-      humidity,
+      todayHumidity,
       windSpeed,
       iconURL,
       UVIndex
@@ -119,7 +121,7 @@ function displayTodayWeather(
   cityName,
   todayDate,
   temperature,
-  humidity,
+  humidityOne,
   windSpeed,
   iconURL,
   UVIndex
@@ -127,7 +129,7 @@ function displayTodayWeather(
   $("#city-name").text(cityName + " (" + todayDate + ")");
   $("img").attr("src", iconURL);
   $("#temperature").text("Temperature: " + temperature + " °F");
-  $("#humidity").text("Humidity: " + humidity + "%");
+  $("#humidity").text("Humidity: " + humidityOne + "%");
   $("#wind-speed").text("Wind Speed: " + windSpeed + " MPH");
   $("#uv-index").append($("<span id='uv-level'>" + UVIndex + "</span>"));
   if (UVIndex > 0 && UVIndex < 3) {
