@@ -1,10 +1,13 @@
+//set today date
 var todayDate = moment().format("M/D/YYYY");
+//set a city for when the user will enter the first time on the site
 if (
   localStorage.getItem("userChoice") == null &&
   localStorage.getItem("userChoice") == undefined
 ) {
   localStorage.setItem("userChoice", "Austin");
 }
+
 var cityName = localStorage.getItem("userChoice");
 var wetherAPIKey = "46e368e4530a17148527414cba27b952";
 var todayWeatherURL =
@@ -34,7 +37,7 @@ if (
   localStorage.setItem("cityList", cityList);
 }
 var returnedCityList = localStorage.getItem("cityList").split(",");
-
+// display a list of eight cities
 displayCities(returnedCityList);
 $.ajax({
   url: todayWeatherURL,
@@ -144,6 +147,10 @@ function displayFiveDayWeather(
 }
 
 function displayCities(cityList) {
+  //set history list to not being longer than 8 cities
+  if (cityList.length > 8) {
+    cityList.splice(8, cityList.length - 8);
+  }
   for (let i = 0; i < cityList.length; i++) {
     tr = $("<tr class='table-cities'><td>" + cityList[i] + "</td></tr>");
     tr.css("text-align", "left");
@@ -152,10 +159,11 @@ function displayCities(cityList) {
 }
 
 $("#search-button").click(function () {
-  chosenCity = $("#search").val();
+  var chosenCity = $("#search").val();
   localStorage.setItem("userChoice", chosenCity);
   window.open("index.html", "_self");
-  localList = [chosenCity];
+  //recreate the history list
+  var localList = [chosenCity];
   for (let i = 0; i < returnedCityList.length; i++) {
     if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
       continue;
@@ -163,9 +171,7 @@ $("#search-button").click(function () {
       localList.push(returnedCityList[i]);
     }
   }
-  if (localList.length > 8) {
-    localList.splice(i, localList.length - 8);
-  }
+
   localStorage.setItem("cityList", localList);
 });
 
