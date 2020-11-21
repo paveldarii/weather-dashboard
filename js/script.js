@@ -64,7 +64,7 @@ $.ajax({
     });
   })
   .then(function (data) {
-    UVIndex = data.value;
+    var UVIndex = data.value;
     displayTodayWeather(
       cityName,
       todayDate,
@@ -118,7 +118,16 @@ function displayTodayWeather(
   $("#temperature").text("Temperature: " + temperature + " °F");
   $("#humidity").text("Humidity: " + humidity + "%");
   $("#wind-speed").text("Wind Speed: " + windSpeed + " MPH");
-  $("#uv-index").text("UV Index: " + UVIndex);
+  $("#uv-index").append($("<span id='uv-level'>" + UVIndex + "</span>"));
+  if (UVIndex > 0 && UVIndex < 3) {
+    $("#uv-level").css("background-color", "green");
+  } else if (UVIndex >= 3 && UVIndex < 7) {
+    $("#uv-level").css("background-color", "yellow");
+  } else if (UVIndex >= 7 && UVIndex < 11) {
+    $("#uv-level").css("background-color", "red");
+  } else if (UVIndex >= 11) {
+    $("#uv-level").css("background-color", "purple");
+  }
 }
 
 function displayFiveDayWeather(
@@ -160,6 +169,10 @@ function displayCities(cityList) {
 
 $("#search-button").click(function () {
   var chosenCity = $("#search").val();
+  // check if the user inserted any text
+  if (chosenCity == "") {
+    return;
+  }
   localStorage.setItem("userChoice", chosenCity);
   window.open("index.html", "_self");
   //recreate the history list
