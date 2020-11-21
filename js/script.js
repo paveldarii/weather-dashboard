@@ -165,7 +165,7 @@ $("#search-button").click(function () {
     }
   }
   if (localList.length > 8) {
-    localList.splice(i, localList.lengt - 8);
+    localList.splice(i, localList.length - 8);
   }
   localStorage.setItem("cityList", localList);
 });
