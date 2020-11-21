@@ -132,13 +132,15 @@ function displayTodayWeather(
   $("#wind-speed").text("Wind Speed: " + windSpeed + " MPH");
   $("#uv-index").append($("<span id='uv-level'>" + UVIndex + "</span>"));
   if (UVIndex > 0 && UVIndex < 3) {
-    $("#uv-level").css("background-color", "green");
-  } else if (UVIndex >= 3 && UVIndex < 7) {
+    $("#uv-level").css("background-color", "#7aeb7a");
+  } else if (UVIndex >= 3 && UVIndex < 5) {
     $("#uv-level").css("background-color", "yellow");
+  } else if (UVIndex >= 5 && UVIndex < 7) {
+    $("#uv-level").css("background-color", "#ff793e");
   } else if (UVIndex >= 7 && UVIndex < 11) {
     $("#uv-level").css("background-color", "red");
-  } else if (UVIndex >= 11) {
-    $("#uv-level").css("background-color", "purple");
+  } else {
+    $("#uv-level").css("background-color", "#c83eff");
   }
 }
 
