@@ -49,13 +49,13 @@ $.ajax({
     windSpeed = response.wind.speed;
     iconKey = response.weather[0].icon;
     temperature = ((9 / 5) * (response.main.temp - 273) + 32).toFixed(2);
-    iconURL = "http://openweathermap.org/img/w/" + iconKey + ".png";
+    iconURL = "https://openweathermap.org/img/w/" + iconKey + ".png";
     lat = response.coord.lat;
     lon = response.coord.lon;
 
     return $.ajax({
       url:
-        "http://api.openweathermap.org/data/2.5/uvi?lat=" +
+        "https://api.openweathermap.org/data/2.5/uvi?lat=" +
         lat +
         "&lon=" +
         lon +
