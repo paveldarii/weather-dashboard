@@ -187,24 +187,32 @@ function displayCities(cityList) {
 }
 weatherData.then;
 $("#search-button").click(function (result) {
-  var chosenCity = $("#search").val();
+  cityName = $("#search").val();
   // check if the user inserted any text
-
-  if (chosenCity == "") {
+  todayWeatherURL =
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+    cityName +
+    "&appid=" +
+    wetherAPIKey;
+  if (cityName == "") {
     return;
   }
-  weatherData.then(function (error) {
-    if (error.JSON.cod == "404") {
-      window.open("index.html", "_self");
-    } else {
-      localStorage.setItem("userChoice", chosenCity);
+
+  //the code bellow checks if there is an error returned when checking for the city, and if there is an error the site should not return anything
+  $.ajax({
+    url: todayWeatherURL,
+    method: "GET",
+    success: function (result) {
+      console.log(result);
+      console.log(result);
+      localStorage.setItem("userChoice", cityName);
 
       //recreate the history list
-      var localList = [chosenCity];
+      var localList = [cityName];
 
       // the loop checks if the city searched by User is not repeated in the search history, and if yes delete it from there and move it on the top of search list
       for (let i = 0; i < returnedCityList.length; i++) {
-        if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
+        if (cityName.toLowerCase() === returnedCityList[i].toLowerCase()) {
           continue;
         } else {
           localList.push(returnedCityList[i]);
@@ -212,7 +220,12 @@ $("#search-button").click(function (result) {
       }
       localStorage.setItem("cityList", localList);
       window.open("index.html", "_self");
-    }
+    },
+    error: function (xhr, status, error) {
+      console.log(xhr, status, error);
+      localStorage.setItem("userChoice", returnedCityList[0]);
+      window.open("index.html", "_self");
+    },
   });
 });
 
