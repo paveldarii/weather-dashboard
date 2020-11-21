@@ -2,6 +2,7 @@
 var todayDate = moment().format("M/D/YYYY");
 var todayHumidity, windSpeed, iconKey, temperature, iconURL, lat, lon;
 //set a default city in case the user will enter the first time on the site
+var isError = false;
 if (
   localStorage.getItem("userChoice") == null &&
   localStorage.getItem("userChoice") == undefined
@@ -41,10 +42,11 @@ var returnedCityList = localStorage.getItem("cityList").split(",");
 displayCities(returnedCityList);
 
 // obtain the longitude and latitude of the city then return the info to display today's weather
-$.ajax({
+var weatherData = $.ajax({
   url: todayWeatherURL,
   method: "GET",
-})
+});
+weatherData
   .then(function (response) {
     console.log(response);
     todayHumidity = response.main.humidity;
@@ -67,6 +69,7 @@ $.ajax({
   })
   .then(function (data) {
     console.log(data);
+
     var UVIndex = data.value;
     displayTodayWeather(
       cityName,
@@ -80,10 +83,11 @@ $.ajax({
   });
 
 // obtain the longitude and latitude of the city then return the info to display in the next five days sections
-$.ajax({
+var cityCoordData = $.ajax({
   url: todayWeatherURL,
   method: "GET",
-})
+});
+cityCoordData
   .then(function (response) {
     lat = response.coord.lat;
     lon = response.coord.lon;
@@ -181,27 +185,35 @@ function displayCities(cityList) {
     $(".cities").append(tr);
   }
 }
-
-$("#search-button").click(function () {
+weatherData.then;
+$("#search-button").click(function (result) {
   var chosenCity = $("#search").val();
   // check if the user inserted any text
+
   if (chosenCity == "") {
     return;
   }
-  localStorage.setItem("userChoice", chosenCity);
-  window.open("index.html", "_self");
-  //recreate the history list
-  var localList = [chosenCity];
-  // the loop checks if the city searched by User is not repeated in the search history, and if yes delete it from there and move it on the top of search list
-  for (let i = 0; i < returnedCityList.length; i++) {
-    if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
-      continue;
+  weatherData.then(function (error) {
+    if (error.JSON.cod == "404") {
+      window.open("index.html", "_self");
     } else {
-      localList.push(returnedCityList[i]);
-    }
-  }
+      localStorage.setItem("userChoice", chosenCity);
 
-  localStorage.setItem("cityList", localList);
+      //recreate the history list
+      var localList = [chosenCity];
+
+      // the loop checks if the city searched by User is not repeated in the search history, and if yes delete it from there and move it on the top of search list
+      for (let i = 0; i < returnedCityList.length; i++) {
+        if (chosenCity.toLowerCase() === returnedCityList[i].toLowerCase()) {
+          continue;
+        } else {
+          localList.push(returnedCityList[i]);
+        }
+      }
+      localStorage.setItem("cityList", localList);
+      window.open("index.html", "_self");
+    }
+  });
 });
 
 $("td").click(function () {
